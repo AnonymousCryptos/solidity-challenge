@@ -56,8 +56,8 @@ contract Staking is Ownable, ReentrancyGuard {
         // Note:
         // In a production system, users should ideally be warned or required
         // to explicitly acknowledge that redeeming before claiming interest
-        // will forfeit their accrued rewards. This behavior is implemented
-        // strictly to comply with the rules defined in the coding challenge.
+        // will forfeit their accrued rewards. It is unfair for user and breaks their trust.
+        // This behavior is implemented strictly to comply with the rules defined in the coding challenge.
         p.interestClaimed = true;
 
         token.transfer(msg.sender, amount);
@@ -80,7 +80,8 @@ contract Staking is Ownable, ReentrancyGuard {
         // Allowing the owner (or any single entity) to withdraw all tokens
         // from a staking contract is generally not ideal in production systems.
         // Doing so can break user trust and would cause future redeem or interest
-        // claims to fail due to insufficient funds.
+        // claims to fail due to insufficient funds. The owner should 
+        // maintain the required funds at all times to keep the protocol functional
         //
         // This function is implemented strictly to comply with the challenge
         // requirements and does not reflect a recommended production approach.
