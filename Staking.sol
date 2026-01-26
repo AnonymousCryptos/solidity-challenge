@@ -56,7 +56,7 @@ contract Staking is Ownable, ReentrancyGuard {
         // Note:
         // In a production system, users should ideally be warned or required
         // to explicitly acknowledge that redeeming before claiming interest
-        // will forfeit their accrued rewards. It is unfair for user and breaks their trust.
+        // will forfeit their accrued rewards. It is unfair for user and breaks their trust in the product.
         // This behavior is implemented strictly to comply with the rules defined in the coding challenge.
         p.interestClaimed = true;
 
