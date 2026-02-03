@@ -91,7 +91,7 @@ contract Staking is Ownable, ReentrancyGuard {
     }
 
     function _interest(address user) internal view returns (uint256) {
-        Position memory p = positions[user];
+        Position storage p = positions[user];
 
         if (p.amount == 0 || p.interestClaimed) {
             return 0;
