@@ -24,7 +24,7 @@ contract Staking is Ownable, ReentrancyGuard {
     }
 
     function stake(uint256 amount) external nonReentrant {
-        require(amount > 0, "Can't be Zero amount");
+        require(amount > 0, "Amount is zero");
 
         Position storage p = positions[msg.sender];
 
@@ -48,7 +48,7 @@ contract Staking is Ownable, ReentrancyGuard {
     }
 
     function redeem(uint256 amount) external nonReentrant {
-        require(amount > 0, "Zero amount");
+        require(amount > 0, "Amount is zero");
 
         Position storage p = positions[msg.sender];
         require(amount <= p.amount, "Insufficient stake");
