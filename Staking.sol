@@ -103,10 +103,7 @@ contract Staking is Ownable, ReentrancyGuard {
             return 0;
         }
 
-        if (duration >= 7 days) {
-            return (p.amount * 10) / 100;
-        }
-
-        return (p.amount * 1) / 100;
+        uint256 rate = duration >= 7 days ? 10: 1;
+        return (p.amount * rate) / 100;
     }
 }
