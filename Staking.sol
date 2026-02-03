@@ -4,8 +4,10 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 contract Staking is Ownable, ReentrancyGuard {
+    using SafeERC20 for IERC20;
     IERC20 public immutable token;
 
     struct Position {
@@ -33,10 +35,10 @@ contract Staking is Ownable, ReentrancyGuard {
             // saves gas by avoiding multiple ERC20 transfers
             // principal and interest are paid atomically
             uint256 payout = p.amount + interest;
-            token.transfer(msg.sender, payout);
+            token.safeTransfer(msg.sender, payout);
         }
 
-        token.transferFrom(msg.sender, address(this), amount);
+        token.safeTransferFrom(msg.sender, address(this), amount);
 
         positions[msg.sender] = Position({
             amount: amount,
@@ -60,7 +62,7 @@ contract Staking is Ownable, ReentrancyGuard {
         // This behavior is implemented strictly to comply with the rules defined in the coding challenge.
         p.interestClaimed = true;
 
-        token.transfer(msg.sender, amount);
+        token.safeTransfer(msg.sender, amount);
 
         if (p.amount == 0) {
             delete positions[msg.sender];
@@ -72,7 +74,7 @@ contract Staking is Ownable, ReentrancyGuard {
         require(interest > 0, "No interest to claim");
 
         positions[msg.sender].interestClaimed = true;
-        token.transfer(msg.sender, interest);
+        token.safeTransfer(msg.sender, interest);
     }
 
     function sweep() external onlyOwner {
@@ -85,7 +87,7 @@ contract Staking is Ownable, ReentrancyGuard {
         //
         // This function is implemented strictly to comply with the challenge
         // requirements and does not reflect a recommended production approach.
-        token.transfer(owner(), token.balanceOf(address(this)));
+        token.safeTransfer(owner(), token.balanceOf(address(this)));
     }
 
     function _interest(address user) internal view returns (uint256) {
